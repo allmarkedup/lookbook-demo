@@ -22,11 +22,18 @@ module LookbookDemo
     config.load_defaults 6.1
     config.public_file_server.enabled = true
 
-    config.view_component.default_preview_layout = "preview"
-    config.view_component.preview_controller = "PreviewController"
-    config.view_component.show_previews = true
-
     config.lookbook.project_name = "Lookbook Demo"
     config.lookbook.experimental_features = true # Opt in to ALL experimental features. Not recommended!
+    config.lookbook.listen_paths << Lookbook::Engine.root.join("app/components")
+
+    config.view_component.show_previews = true
+    config.view_component.default_preview_layout = "preview"
+    config.view_component.preview_controller = "PreviewController"
+
+    # Use Lookbook to build Lookbook's own components :-)
+    config.view_component.preview_paths = [Lookbook::Engine.root.join("test/components/previews")]
+    config.after_initialize do
+      config.view_component.view_component_path = Lookbook::Engine.root.join("app/components/lookbook")
+    end
   end
 end
